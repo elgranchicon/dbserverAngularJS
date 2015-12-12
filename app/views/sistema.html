@@ -1,0 +1,47 @@
+
+
+<div style="background-color:gray" ng-show="true">
+    <a href="" ng-click="trocarMenu('votacao')">Votação</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="" ng-click="trocarMenu('restaurante')">Restaurantes</a>
+</div>
+
+<br><br>
+
+<div id="viewVotacao" ng-show="menu == 'votacao'">
+    <div id="mensagem" ng-hide="scopeVotacao.mensagemErro == ''" style="background-color:red">
+        {{scopeVotacao.mensagemErro}}
+    </div>
+    
+    <div>
+        Informe e-mail: <input type="text" id="email" name="email" data-ng-model="scopeVotacao.email" ng-blur="scopeVotacao.f.liberaTelaVotacao()">
+    </div>
+    <div ng-hide="scopeVotacao.liberaTelaVotacao != true">
+        <div> 
+            Selecione o restaurante:
+            <select name="repeatSelect" id="repeatSelect" ng-model="scopeVotacao.restaurante" ng-change="scopeVotacao.f.atualizaRestaurante($item)">
+              <option ng-repeat="option in scopeVotacao.listaRestaurantes" value="{{option._id}}">{{option.nome}}</option>
+            </select>
+        </div>
+        <div>
+            <input type="button" name="btnSalvarVotacao" value="Salvar" ng-click="scopeVotacao.f.salvarVotacao()" ng-disabled="(scopeVotacao._id != null && scopeVotacao._id != '') || scopeVotacao.listaRestaurantes.length == 0">
+        </div>
+    </div>
+    <div ng-show="scopeVotacao.listaVotacaoHoje.length > 0">
+        <li ng-repeat="votacaoHoje in scopeVotacao.listaVotacaoHoje">{{votacaoHoje.restaurante}}</li>
+    </div>    
+</div>
+
+
+<div id="viewRestaurante" ng-show="menu == 'restaurante'" ng-init="scopeRestaurante.f.listarRestaurante()">
+    <div>
+        Inserir restaurante: <input type="text" id="nome" name="nome" data-ng-model="scopeRestaurante.nome">
+    </div>
+    <div>
+        <input type="button" name="btnSalvarRestaurante" value="Salvar" ng-click="scopeRestaurante.f.salvarRestaurante()">
+    </div>
+    <div ng-show="scopeRestaurante.listaRestaurantes.length > 0">
+        <li ng-repeat="restaurante in scopeRestaurante.listaRestaurantes">{{restaurante.nome}}</li>
+    </div>
+</div>
+
