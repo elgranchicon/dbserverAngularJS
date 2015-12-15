@@ -2,28 +2,54 @@
 
 var app = angular.module('dbserverApp');
 
-app.factory('VotacaoServiceListarInserir', ['$resource', 
-    function ($resource) {
-        return $resource('http://localhost:9009/sistema/votacao', {}, {
+app.factory('VotacaoServiceListarInserir', ['$resource', 'configuration', 
+    function ($resource, configuration) {
+        return $resource(configuration.API_BASE_URL + '/votacao', {}, {
             listar: {method: 'GET', isArray: true},
             inserir: {method: 'POST'}
         }); 
     }
 ]);
 
-app.factory('VotacaoServiceBuscarPorIdExcluir', ['$resource', 
-    function ($resource) {
-        return $resource('http://localhost:9009/sistema/votacao/:id', {}, {
+/*
+app.factory('VotacaoServiceBuscarPorIdExcluir', ['$resource', 'configuration', 
+    function ($resource, configuration) {
+        return $resource(configuration.API_BASE_URL + '/votacao/:id', {}, {
             excluir: {method: 'DELETE'},
             buscarPorId: {method: 'GET'}
         }); 
     }
 ]);
+*/
 
-app.factory('VotacaoServicePesquisar', ['$resource', 
-    function ($resource) {
-        return $resource('http://localhost:9009/sistema/votacaos/pesquisar', {}, {
+app.factory('VotacaoServicePesquisar', ['$resource', 'configuration', 
+    function ($resource, configuration) {
+        return $resource(configuration.API_BASE_URL + '/votacaos/pesquisar', {}, {
             pesquisar: {method: 'POST', isArray: true}
+        }); 
+    }
+]);
+
+app.factory('VotacaoServiceRestaurantesJaUtilizados', ['$resource', 'configuration',  
+    function ($resource, configuration) {
+        return $resource(configuration.API_BASE_URL + '/votacaos/restaurantesJaUtilizados', {}, {
+            pesquisar: {method: 'POST', isArray: true},
+        }); 
+    }
+]);
+
+app.factory('VotacaoServiceResultados', ['$resource', 'configuration',  
+    function ($resource, configuration) {
+        return $resource(configuration.API_BASE_URL + '/votacaos/resultados', {}, {
+            pesquisar: {method: 'POST', isArray: true},
+        }); 
+    }
+]);
+
+app.factory('VotacaoServiceResultadosInserir', ['$resource', 'configuration',  
+    function ($resource, configuration) {
+        return $resource(configuration.API_BASE_URL + '/votacaos/resultado', {}, {
+            inserir: {method: 'POST'}
         }); 
     }
 ]);

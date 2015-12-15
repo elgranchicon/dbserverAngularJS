@@ -2,6 +2,7 @@
 
 var app = angular
   .module('dbserverApp', [
+    'dbserverConfig',
     'ngAnimate',
     'ngCookies',
     'ngResource',
@@ -19,3 +20,9 @@ var app = angular
         redirectTo: '/sistema' 
       }); 
   });
+
+app.config(['$httpProvider', function ($httpProvider) {
+        $httpProvider.defaults.useXDomain = true;
+        delete $httpProvider.defaults.headers.common['X-Requested-With'];
+    }
+]);

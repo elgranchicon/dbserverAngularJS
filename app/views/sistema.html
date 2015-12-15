@@ -1,35 +1,45 @@
 
-
 <div style="background-color:gray" ng-show="true">
-    <a href="" ng-click="trocarMenu('votacao')">Votação</a>
+    <a href="" style="color:white" ng-click="trocarMenu('votacao')">Votação</a>
     &nbsp;&nbsp;&nbsp;&nbsp;
-    <a href="" ng-click="trocarMenu('restaurante')">Restaurantes</a>
+    <a href="" style="color:white" ng-click="trocarMenu('restaurante')">Restaurantes</a>
+    &nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="" style="color:white" ng-click="trocarMenu('resultados')">Resultados</a>
 </div>
 
 <br><br>
 
 <div id="viewVotacao" ng-show="menu == 'votacao'">
-    <div id="mensagem" ng-hide="scopeVotacao.mensagemErro == ''" style="background-color:red">
-        {{scopeVotacao.mensagemErro}}
+    <div ng-show="scopeVotacao.votacaoEncerrada == true">
+        Votação encerrada
     </div>
-    
-    <div>
-        Informe e-mail: <input type="text" id="email" name="email" data-ng-model="scopeVotacao.email" ng-blur="scopeVotacao.f.liberaTelaVotacao()">
-    </div>
-    <div ng-hide="scopeVotacao.liberaTelaVotacao != true">
-        <div> 
-            Selecione o restaurante:
-            <select name="repeatSelect" id="repeatSelect" ng-model="scopeVotacao.restaurante" ng-change="scopeVotacao.f.atualizaRestaurante($item)">
-              <option ng-repeat="option in scopeVotacao.listaRestaurantes" value="{{option._id}}">{{option.nome}}</option>
-            </select>
+    <div ng-show="scopeVotacao.votacaoEncerrada != true">
+        <div id="mensagem" ng-hide="scopeVotacao.mensagemErro == ''" style="background-color:red; width:350px">
+            {{scopeVotacao.mensagemErro}}
         </div>
         <div>
-            <input type="button" name="btnSalvarVotacao" value="Salvar" ng-click="scopeVotacao.f.salvarVotacao()" ng-disabled="(scopeVotacao._id != null && scopeVotacao._id != '') || scopeVotacao.listaRestaurantes.length == 0">
+        &nbsp;
         </div>
+        <div>
+            Informe e-mail: <input type="text" id="email" name="email" data-ng-model="scopeVotacao.email" ng-blur="scopeVotacao.f.liberaTelaVotacao()">
+        </div>
+        <div ng-hide="scopeVotacao.liberaTelaVotacao != true">
+            <div> 
+                Selecione o restaurante:
+                <select name="repeatSelect" id="repeatSelect" ng-model="scopeVotacao.restaurante" ng-options="restaurante as restaurante.nome for restaurante in scopeVotacao.listaRestaurantes"></select>
+            </div>
+            <div>
+                <input type="button" name="btnSalvarVotacao" value="Salvar" ng-click="scopeVotacao.f.salvarVotacao()" ng-disabled="scopeVotacao.liberaTelaVotacao != true || scopeVotacao.listaRestaurantes.length == 0">
+            </div>
+        </div>
+        <div>
+        &nbsp;
+        </div>
+        <div ng-show="scopeVotacao.listaVotacaoHoje.length > 0">
+            Votados de hoje:
+            <li ng-repeat="votacaoHoje in scopeVotacao.listaVotacaoHoje">{{votacaoHoje.email}} - {{votacaoHoje.restaurante.nome}}</li>
+        </div>    
     </div>
-    <div ng-show="scopeVotacao.listaVotacaoHoje.length > 0">
-        <li ng-repeat="votacaoHoje in scopeVotacao.listaVotacaoHoje">{{votacaoHoje.restaurante}}</li>
-    </div>    
 </div>
 
 
@@ -45,3 +55,23 @@
     </div>
 </div>
 
+<div id="viewResultados" ng-show="menu == 'resultados'" ng-init="scopeResultados.f.listarResultados()">
+    <div>
+        Resultados da semana:
+        <div ng-show="scopeResultados.listaResultados.length > 0">
+            <li ng-repeat="resultado in scopeResultados.listaResultados">{{resultado.data}} - {{resultado.restaurante.nome}}</li>
+        </div>
+        <div ng-show="scopeResultados.listaResultados.length == 0">
+            Ainda não existem resultados (deve ser 2a feira hoje... ou estão almoçando sozinhos)
+        </div>
+    </div>
+    <div>
+    &nbsp;
+    </div>
+    <div>
+        Resultado de hoje:
+        <div ng-show="scopeResultados.resultadoHoje != null">
+            {{scopeResultados.resultadoHoje.data}} - {{scopeResultados.resultadoHoje.restaurante.nome}}
+        </div>
+    </div>
+</div>
