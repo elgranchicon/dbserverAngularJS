@@ -8,6 +8,7 @@ sudo npm install grunt-cli
 
 
 //after, to update the required dependencies 
+//the folders 'bower_components, node_modules' will be created
 npm install
 bower install
 grunt clean
